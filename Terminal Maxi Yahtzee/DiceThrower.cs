@@ -2,7 +2,7 @@
 
 internal class DiceThrower
 {
-    public int[] DiceValues { get; private set; }
+    public int[] DiceValues { get; }
 
     public DiceThrower()
     {
@@ -37,10 +37,7 @@ internal class DiceThrower
         }
     }
 
-    public string GetDiceValuesAsString()
-    {
-        return string.Join(", ", DiceValues.Select((value, index) => $"{value}"));
-    }
+    public string GetDiceValuesAsString() => string.Join(", ", DiceValues.Select(value => $"{value}"));
 
     public bool[] GetDiceToKeep(DiceThrower diceThrower, int[] currentRoll)
     {
