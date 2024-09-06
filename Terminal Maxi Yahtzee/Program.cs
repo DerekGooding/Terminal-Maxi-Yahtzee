@@ -6,9 +6,9 @@ namespace Terminal_Maxi_Yahtzee;
 
 internal static class Program
 {
-    private static void Main(string[] args)
+    private static void Main()
     {
-        List<Player> players = new();
+        List<Player> players = [];
         Console.ForegroundColor = ConsoleColor.White;
         Console.Write("Welcome to Terminal Maxi Yahtzee.\n");
         //Thread.Sleep(1000);
