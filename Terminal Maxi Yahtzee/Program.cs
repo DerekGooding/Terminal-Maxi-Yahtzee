@@ -43,11 +43,11 @@ internal static class Program
         //Thread.Sleep(1000);
         Clear();
 
-        while (true)  // Keep looping until all scoreboards are complete
+        do  // Keep looping until all scoreboards are complete
         {
             foreach (Player player in players)
             {
-                if (!player.IsScoreboardComplete())
+                if (!player.IsScoreboardComplete)
                 {
                     bool decisionMade = false;
                     bool turnSkipped = false; // New flag to track if the turn was skipped
@@ -56,10 +56,10 @@ internal static class Program
                     Clear();
                     player.PrintPlayerCard();
                     WriteLine($"\n It's your turn {player.Name}.");
-                    WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
+                    WriteLine("Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
                     while (!decisionMade)
                     {
-                        var keyPress = ReadKey(true).Key;
+                        ConsoleKey keyPress = ReadKey(true).Key;
 
                         if (keyPress == ConsoleKey.S)
                         {
@@ -68,14 +68,14 @@ internal static class Program
                             player.PrintPlayerCard();
                             WriteLine();
 
-                            WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
+                            WriteLine("Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
                         }
                         else if (keyPress == ConsoleKey.H)
                         {
                             Clear();
                             // Display shorthand notations when 'H' is pressed
                             player.DisplayShorthandNotations();
-                            WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
+                            WriteLine("Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
                         }
                         else if (keyPress == ConsoleKey.E)
                         {
@@ -126,7 +126,7 @@ internal static class Program
                             WriteLine("Press 'H' to view shorthand notations");
                             while (!decisionMade)
                             {
-                                var keyPress = ReadKey(true).Key;
+                                ConsoleKey keyPress = ReadKey(true).Key;
 
                                 if (keyPress == ConsoleKey.S)
                                 {
@@ -138,7 +138,7 @@ internal static class Program
                                     WriteLine($"\n{diceThrower.GetDiceValuesAsString()}");
                                     ResetColor();
                                     WriteLine();
-                                    WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
+                                    WriteLine("Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
                                 }
                                 else if (keyPress == ConsoleKey.H)
                                 {
@@ -147,7 +147,7 @@ internal static class Program
                                     player.DisplayShorthandNotations();
                                     WriteLine($"{diceThrower.GetDiceValuesAsString()}");
                                     WriteLine();
-                                    WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
+                                    WriteLine("Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
                                 }
                                 else if (keyPress == ConsoleKey.E)
                                 {
@@ -157,7 +157,7 @@ internal static class Program
                                     ForegroundColor = ConsoleColor.Green;
                                     WriteLine($"You ended your turn early. {throwsRemaining} throws carried over to your next turn.\n");
                                     ResetColor();
-                                    WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
+                                    WriteLine("Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
 
                                     decisionMade = true;
                                     endTurn = true;  // Set flag to true to indicate turn end
@@ -194,13 +194,8 @@ internal static class Program
                     WriteLine();
                 }
             }
-
-            // Check if all players are complete
-            if (players.All(p => p.IsScoreboardComplete()))
-            {
-                break;
-            }
         }
+        while (!players.All(p => p.IsScoreboardComplete));
         Clear();
         ForegroundColor = ConsoleColor.DarkYellow;
         WriteLine("Game Over. Final Score: \n");

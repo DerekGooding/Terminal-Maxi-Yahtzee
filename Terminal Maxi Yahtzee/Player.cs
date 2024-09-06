@@ -64,7 +64,7 @@ internal class Player
     public void PrintPlayerCard()
     {
         int maxKeyLength = PlayerCard.Keys.Max(key => key.Length);
-        foreach (var entry in PlayerCard)
+        foreach (KeyValuePair<string, int?> entry in PlayerCard)
         {
             string scoreText = entry.Value.HasValue ? entry.Value.ToString() : "-";
             WriteLine($"{entry.Key.PadRight(maxKeyLength)}: {scoreText}");
@@ -111,7 +111,7 @@ internal class Player
     {
         ForegroundColor = ConsoleColor.Cyan;
         WriteLine("Shorthand Notations:");
-        foreach (var entry in CategoryShortcuts)
+        foreach (KeyValuePair<string, string> entry in CategoryShortcuts)
         {
             WriteLine($"{entry.Key} => {entry.Value}");
         }
@@ -119,11 +119,7 @@ internal class Player
         WriteLine();
     }
 
-    public bool IsScoreboardComplete()
-    {
-        // Checks that every score has an int value
-        return PlayerCard.Values.All(score => score.HasValue);
-    }
+    public bool IsScoreboardComplete => PlayerCard.Values.All(score => score.HasValue);
 
     public void CheckBonusEligibility()
     {

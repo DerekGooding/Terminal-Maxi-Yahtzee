@@ -71,7 +71,7 @@ internal class ScoreCalculator
     private static int GetThreePairsScore(int[] dice)
     {
         // Group by dice values and filter only groups that have exactly 2 of the same kind
-        var groups = dice.GroupBy(d => d)
+        List<IGrouping<int, int>> groups = dice.GroupBy(d => d)
                          .Where(g => g.Count() == 2)
                          .ToList();
 
@@ -94,7 +94,7 @@ internal class ScoreCalculator
 
     private static int GetSmallStraightScore(int[] dice)
     {
-        var straight = new HashSet<int>(dice);
+        HashSet<int> straight = new HashSet<int>(dice);
         if (new int[] { 1, 2, 3, 4, 5 }.All(straight.Contains))
             return 15;
         return 0;
@@ -102,7 +102,7 @@ internal class ScoreCalculator
 
     private static int GetLargeStraightScore(int[] dice)
     {
-        var straight = new HashSet<int>(dice);
+        HashSet<int> straight = new HashSet<int>(dice);
         if (new int[] { 2, 3, 4, 5, 6 }.All(straight.Contains))
             return 20;
         return 0;
@@ -115,11 +115,11 @@ internal class ScoreCalculator
 
     private static int GetHut(int[] dice)
     {
-        var groups = dice.GroupBy(d => d).ToList();
+        List<IGrouping<int, int>> groups = dice.GroupBy(d => d).ToList();
 
         // Check for the presence of exactly one triplet and one pair
-        var hasThreeOfAKind = groups.FirstOrDefault(g => g.Count() == 3);
-        var hasPair = groups.FirstOrDefault(g => g.Count() == 2);
+        IGrouping<int, int> hasThreeOfAKind = groups.FirstOrDefault(g => g.Count() == 3);
+        IGrouping<int, int> hasPair = groups.FirstOrDefault(g => g.Count() == 2);
 
         if (hasThreeOfAKind != null && hasPair != null)
         {
@@ -133,13 +133,13 @@ internal class ScoreCalculator
 
     private static int GetHouse(int[] dice)
     {
-        var groups = dice.GroupBy(d => d).ToList();
+        List<IGrouping<int, int>> groups = dice.GroupBy(d => d).ToList();
         return groups.Count(g => g.Count() >= 3) == 2 ? groups.Sum(g => g.Key * g.Count()) : 0;
     }
 
     private static int GetTowerScore(int[] dice)
     {
-        var groups = dice.GroupBy(d => d).ToList();
+        List<IGrouping<int, int>> groups = dice.GroupBy(d => d).ToList();
         if (groups.Any(g => g.Count() == 4) && groups.Any(g => g.Count() == 2))
             return groups.Sum(g => g.Key * g.Count());
         return 0;

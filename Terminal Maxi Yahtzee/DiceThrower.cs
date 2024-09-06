@@ -3,12 +3,10 @@
 internal class DiceThrower
 {
     public int[] DiceValues { get; private set; }
-    private Random random;
 
     public DiceThrower()
     {
         DiceValues = new int[6];
-        random = new Random();
         RollAllDice(); // Initialize all dice with random values
     }
 
@@ -16,7 +14,7 @@ internal class DiceThrower
     {
         for (int i = 0; i < DiceValues.Length; i++)
         {
-            DiceValues[i] = random.Next(1, 7);
+            DiceValues[i] = Random.Shared.Next(1, 7);
         }
     }
 
@@ -26,7 +24,7 @@ internal class DiceThrower
         {
             if (!diceToKeep[i]) // Only reroll dice that are not kept
             {
-                DiceValues[i] = random.Next(1, 7);
+                DiceValues[i] = Random.Shared.Next(1, 7);
             }
         }
     }
