@@ -36,11 +36,10 @@ internal static class ScoreCalculator
         // Group dice by value and filter groups where at least two dice share the same value
         var pairs = dice.GroupBy(d => d)
                         .Where(g => g.Count() >= 2)
-                        .Select(g => new { Value = g.Key, Count = g.Count() })
-                        .ToList();
+                        .Select(g => new { Value = g.Key, Count = g.Count() });
 
         // If pairs exist, find the highest value pair and return twice its value
-        if (pairs.Count > 0)
+        if (pairs.Any())
         {
             var highestPair = pairs.OrderByDescending(p => p.Value).First();
             return highestPair.Value * 2;
@@ -71,12 +70,11 @@ internal static class ScoreCalculator
     private static int GetThreePairsScore(int[] dice)
     {
         // Group by dice values and filter only groups that have exactly 2 of the same kind
-        List<IGrouping<int, int>> groups = dice.GroupBy(d => d)
-                         .Where(g => g.Count() == 2)
-                         .ToList();
+        IEnumerable<IGrouping<int, int>> groups = dice.GroupBy(d => d)
+                         .Where(g => g.Count() == 2);
 
         // Ensure that there are exactly three groups (pairs)
-        return groups.Count == 3 ? groups.Sum(g => g.Key * 2) : 0;
+        return groups.Count() == 3 ? groups.Sum(g => g.Key * 2) : 0;
     }
 
     private static int GetOfAKindScore(int[] dice, int count)
@@ -93,11 +91,11 @@ internal static class ScoreCalculator
 
     private static int GetHut(int[] dice)
     {
-        List<IGrouping<int, int>> groups = dice.GroupBy(d => d).ToList();
+        IEnumerable<IGrouping<int, int>> groups = dice.GroupBy(d => d);
 
         // Check for the presence of exactly one triplet and one pair
-        IGrouping<int, int> hasThreeOfAKind = groups.Find(g => g.Count() == 3);
-        IGrouping<int, int> hasPair = groups.Find(g => g.Count() == 2);
+        IGrouping<int, int>? hasThreeOfAKind = groups.FirstOrDefault(g => g.Count() == 3);
+        IGrouping<int, int>? hasPair = groups.FirstOrDefault(g => g.Count() == 2);
 
         if (hasThreeOfAKind != null && hasPair != null)
         {
@@ -111,13 +109,13 @@ internal static class ScoreCalculator
 
     private static int GetHouse(int[] dice)
     {
-        List<IGrouping<int, int>> groups = dice.GroupBy(d => d).ToList();
+        IEnumerable<IGrouping<int, int>> groups = dice.GroupBy(d => d);
         return groups.Count(g => g.Count() >= 3) == 2 ? groups.Sum(g => g.Key * g.Count()) : 0;
     }
 
     private static int GetTowerScore(int[] dice)
     {
-        List<IGrouping<int, int>> groups = dice.GroupBy(d => d).ToList();
+        IEnumerable<IGrouping<int, int>> groups = dice.GroupBy(d => d);
         return groups.Any(g => g.Count() == 4) && groups.Any(g => g.Count() == 2) ? groups.Sum(g => g.Key * g.Count()) : 0;
     }
 

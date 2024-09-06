@@ -49,7 +49,7 @@ internal class DiceThrower
             WriteLine($"\n{diceThrower.GetDiceValuesAsString()}\n");
             WriteLine("Write the values you wish to keep. Press ENTER to continue");
 
-            string input = ReadLine().Trim();
+            string? input = ReadLine()?.Trim();
             Clear();
             // If the input is empty, reroll all dice
             if (string.IsNullOrEmpty(input))
