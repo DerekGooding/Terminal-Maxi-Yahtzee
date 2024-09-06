@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Terminal_Maxi_Yahtzee;
+﻿namespace Terminal_Maxi_Yahtzee;
 
 internal class ScoreCalculator
 {

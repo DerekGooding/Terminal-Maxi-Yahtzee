@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Terminal_Maxi_Yahtzee;
+﻿namespace Terminal_Maxi_Yahtzee;
 
 internal class DiceThrower
 {
@@ -39,7 +35,7 @@ internal class DiceThrower
     {
         for (int i = 0; i < DiceValues.Length; i++)
         {
-            Console.WriteLine($"Dice {i + 1}: {DiceValues[i]}");
+            WriteLine($"Dice {i + 1}: {DiceValues[i]}");
         }
     }
 
@@ -54,29 +50,29 @@ internal class DiceThrower
 
         while (true)
         {
-            Console.Clear();
-            Console.WriteLine($"\n{diceThrower.GetDiceValuesAsString()}\n");
-            Console.WriteLine("Write the values you wish to keep. Press ENTER to continue");
+            Clear();
+            WriteLine($"\n{diceThrower.GetDiceValuesAsString()}\n");
+            WriteLine("Write the values you wish to keep. Press ENTER to continue");
 
-            string input = Console.ReadLine().Trim();
-            Console.Clear();
+            string input = ReadLine().Trim();
+            Clear();
             // If the input is empty, reroll all dice
             if (string.IsNullOrEmpty(input))
             {
-                Console.WriteLine("Rerolling all dice...");
+                WriteLine("Rerolling all dice...");
                 return new bool[currentRoll.Length]; // All dice will be rerolled (none are kept)
             }
 
             // Validate input: Ensure all characters are digits between 1 and 6
             if (!input.All(c => char.IsDigit(c) && c >= '1' && c <= '6'))
             {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Invalid input. Please enter numbers between 1 and 6.");
-                Console.ResetColor();
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine($"\n{diceThrower.GetDiceValuesAsString()}\n");
-                Console.ResetColor();
+                Clear();
+                ForegroundColor = ConsoleColor.Red;
+                WriteLine("Invalid input. Please enter numbers between 1 and 6.");
+                ResetColor();
+                ForegroundColor = ConsoleColor.White;
+                WriteLine($"\n{diceThrower.GetDiceValuesAsString()}\n");
+                ResetColor();
                 continue; // Reprompt the player
             }
 
@@ -113,12 +109,12 @@ internal class DiceThrower
 
             if (invalidKeep)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Input value does not exist. Please try again.");
-                Console.ResetColor();
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine($"\n{diceThrower.GetDiceValuesAsString()}\n");
-                Console.ResetColor();
+                ForegroundColor = ConsoleColor.Red;
+                WriteLine("Input value does not exist. Please try again.");
+                ResetColor();
+                ForegroundColor = ConsoleColor.White;
+                WriteLine($"\n{diceThrower.GetDiceValuesAsString()}\n");
+                ResetColor();
                 continue; // Reprompt the player
             }
 

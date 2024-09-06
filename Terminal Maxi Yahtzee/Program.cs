@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Terminal_Maxi_Yahtzee;
+﻿namespace Terminal_Maxi_Yahtzee;
 
 internal static class Program
 {
     private static void Main()
     {
         List<Player> players = [];
-        Console.ForegroundColor = ConsoleColor.White;
-        Console.Write("Welcome to Terminal Maxi Yahtzee.\n");
+        ForegroundColor = ConsoleColor.White;
+        Write("Welcome to Terminal Maxi Yahtzee.\n");
         //Thread.Sleep(1000);
-        Console.ResetColor();
+        ResetColor();
         int playerCount = 0;
 
         while (true)
         {
-            Console.Write("Please input the number of players: ");
-            string input = Console.ReadLine();
+            Write("Please input the number of players: ");
+            string input = ReadLine();
 
             // Try to parse the input and ensure it is a positive integer greater than zero
             if (int.TryParse(input, out playerCount) && playerCount > 0)
@@ -28,24 +24,24 @@ internal static class Program
             else
             {
                 // Error handling: display a message and reprompt
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine("Invalid input. Please enter a positive integer greater than 0.");
-                Console.ResetColor();
+                ForegroundColor = ConsoleColor.DarkRed;
+                WriteLine("Invalid input. Please enter a positive integer greater than 0.");
+                ResetColor();
             }
         }
 
         for (int i = 1; i <= playerCount; i++)
         {
-            Console.Clear();
+            Clear();
             //Thread.Sleep(1000);
-            Console.Write($"Enter name for player {i}: ");
-            string name = Console.ReadLine();
+            Write($"Enter name for player {i}: ");
+            string name = ReadLine();
             players.Add(new Player(name));
         }
-        Console.Clear();
-        Console.Write("Game starting...");
+        Clear();
+        Write("Game starting...");
         //Thread.Sleep(1000);
-        Console.Clear();
+        Clear();
 
         while (true)  // Keep looping until all scoreboards are complete
         {
@@ -57,36 +53,36 @@ internal static class Program
                     bool turnSkipped = false; // New flag to track if the turn was skipped
 
                     // Offer the player the option to skip the turn before rolling any dice
-                    Console.Clear();
+                    Clear();
                     player.PrintPlayerCard();
-                    Console.WriteLine($"\n It's your turn {player.Name}.");
-                    Console.WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
+                    WriteLine($"\n It's your turn {player.Name}.");
+                    WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
                     while (!decisionMade)
                     {
-                        var keyPress = Console.ReadKey(true).Key;
+                        var keyPress = ReadKey(true).Key;
 
                         if (keyPress == ConsoleKey.S)
                         {
-                            Console.Clear();
-                            Console.WriteLine($"{player.Name}'s Scoreboard:");
+                            Clear();
+                            WriteLine($"{player.Name}'s Scoreboard:");
                             player.PrintPlayerCard();
-                            Console.WriteLine();
+                            WriteLine();
 
-                            Console.WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
+                            WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
                         }
                         else if (keyPress == ConsoleKey.H)
                         {
-                            Console.Clear();
+                            Clear();
                             // Display shorthand notations when 'H' is pressed
                             player.DisplayShorthandNotations();
-                            Console.WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
+                            WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
                         }
                         else if (keyPress == ConsoleKey.E)
                         {
-                            Console.Clear();
+                            Clear();
                             player.AvailableThrows += 3;  // Save all 3 throws for the next turn
-                            Console.WriteLine($"{player.Name} skipped their turn. 3 throws saved for later turns");
-                            Console.WriteLine("You can set a score of 0 for a category.");
+                            WriteLine($"{player.Name} skipped their turn. 3 throws saved for later turns");
+                            WriteLine("You can set a score of 0 for a category.");
                             player.ChooseScoreCategory(null);  // Pass null to indicate the player skipped the turn
                             decisionMade = true;
                             turnSkipped = true;  // Set flag to true to indicate the turn was skipped
@@ -94,7 +90,7 @@ internal static class Program
                         }
                         else if (keyPress == ConsoleKey.Enter)
                         {
-                            Console.Clear();
+                            Clear();
                             decisionMade = true;
                         }
                     }
@@ -104,7 +100,7 @@ internal static class Program
                         continue;  // Skip to the next player if the turn was skipped
                     }
 
-                    Console.WriteLine();
+                    WriteLine();
 
                     // Dice rolling logic will only be executed if the turn wasn't skipped
                     int currentThrows = player.AvailableThrows;
@@ -115,53 +111,53 @@ internal static class Program
 
                     for (int i = 0; i < throwCount; i++)
                     {
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine($"{diceThrower.GetDiceValuesAsString()}\n");
-                        Console.ResetColor();
+                        ForegroundColor = ConsoleColor.White;
+                        WriteLine($"{diceThrower.GetDiceValuesAsString()}\n");
+                        ResetColor();
 
                         int throwsRemaining = throwCount - i - 1;
                         if (throwsRemaining > 0)
                         {
-                            Console.WriteLine($"\u001b[38;2;255;150;0m{throwsRemaining} throws remaining\u001b[0m \n");
+                            WriteLine($"\u001b[38;2;255;150;0m{throwsRemaining} throws remaining\u001b[0m \n");
                             decisionMade = false;
-                            Console.WriteLine("Press 'ENTER' to continue");
-                            Console.WriteLine("Press 'S' to view scoreboard");
-                            Console.WriteLine("Press 'E' to end turn");
-                            Console.WriteLine("Press 'H' to view shorthand notations");
+                            WriteLine("Press 'ENTER' to continue");
+                            WriteLine("Press 'S' to view scoreboard");
+                            WriteLine("Press 'E' to end turn");
+                            WriteLine("Press 'H' to view shorthand notations");
                             while (!decisionMade)
                             {
-                                var keyPress = Console.ReadKey(true).Key;
+                                var keyPress = ReadKey(true).Key;
 
                                 if (keyPress == ConsoleKey.S)
                                 {
-                                    Console.Clear();
+                                    Clear();
                                     // Display the scoreboard and re-prompt the player
-                                    Console.WriteLine($"{player.Name}'s Scoreboard:");
+                                    WriteLine($"{player.Name}'s Scoreboard:");
                                     player.PrintPlayerCard();
-                                    Console.ForegroundColor = ConsoleColor.White;
-                                    Console.WriteLine($"\n{diceThrower.GetDiceValuesAsString()}");
-                                    Console.ResetColor();
-                                    Console.WriteLine();
-                                    Console.WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
+                                    ForegroundColor = ConsoleColor.White;
+                                    WriteLine($"\n{diceThrower.GetDiceValuesAsString()}");
+                                    ResetColor();
+                                    WriteLine();
+                                    WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
                                 }
                                 else if (keyPress == ConsoleKey.H)
                                 {
-                                    Console.Clear();
+                                    Clear();
                                     // Display shorthand notations when 'H' is pressed
                                     player.DisplayShorthandNotations();
-                                    Console.WriteLine($"{diceThrower.GetDiceValuesAsString()}");
-                                    Console.WriteLine();
-                                    Console.WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
+                                    WriteLine($"{diceThrower.GetDiceValuesAsString()}");
+                                    WriteLine();
+                                    WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
                                 }
                                 else if (keyPress == ConsoleKey.E)
                                 {
-                                    Console.Clear();
+                                    Clear();
                                     // End the player's turn and add remaining throws to next turn
                                     player.AvailableThrows = 3 + throwsRemaining;
-                                    Console.ForegroundColor = ConsoleColor.Green;
-                                    Console.WriteLine($"You ended your turn early. {throwsRemaining} throws carried over to your next turn.\n");
-                                    Console.ResetColor();
-                                    Console.WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
+                                    ForegroundColor = ConsoleColor.Green;
+                                    WriteLine($"You ended your turn early. {throwsRemaining} throws carried over to your next turn.\n");
+                                    ResetColor();
+                                    WriteLine($"Press 'ENTER' to throw\n Press 'S' to view scoreboard \n Press 'E' to end turn \n Press 'H' to view shorthand notations");
 
                                     decisionMade = true;
                                     endTurn = true;  // Set flag to true to indicate turn end
@@ -184,18 +180,18 @@ internal static class Program
                         }
                         else
                         {
-                            Console.WriteLine("No throws remaining.");
+                            WriteLine("No throws remaining.");
                         }
                     }
 
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine("Result:");
-                    Console.WriteLine($"\n{diceThrower.GetDiceValuesAsString()}\n");
-                    Console.ResetColor();
+                    ForegroundColor = ConsoleColor.White;
+                    WriteLine("Result:");
+                    WriteLine($"\n{diceThrower.GetDiceValuesAsString()}\n");
+                    ResetColor();
                     player.ChooseScoreCategory(diceThrower.DiceValues);
                     //Thread.Sleep(1000);
 
-                    Console.WriteLine();
+                    WriteLine();
                 }
             }
 
@@ -205,14 +201,14 @@ internal static class Program
                 break;
             }
         }
-        Console.Clear();
-        Console.ForegroundColor = ConsoleColor.DarkYellow;
-        Console.WriteLine("Game Over. Final Score: \n");
-        Console.ResetColor();
+        Clear();
+        ForegroundColor = ConsoleColor.DarkYellow;
+        WriteLine("Game Over. Final Score: \n");
+        ResetColor();
         foreach (Player player in players)
         {
             int totalScore = player.CalculateTotalScore();
-            Console.WriteLine($"{player.Name}'s total Score: {totalScore}");
+            WriteLine($"{player.Name}'s total Score: {totalScore}");
         }
 
         while (true)

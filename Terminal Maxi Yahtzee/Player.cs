@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Terminal_Maxi_Yahtzee;
+﻿namespace Terminal_Maxi_Yahtzee;
 
 internal class Player
 {
@@ -71,7 +67,7 @@ internal class Player
         foreach (var entry in PlayerCard)
         {
             string scoreText = entry.Value.HasValue ? entry.Value.ToString() : "-";
-            Console.WriteLine($"{entry.Key.PadRight(maxKeyLength)}: {scoreText}");
+            WriteLine($"{entry.Key.PadRight(maxKeyLength)}: {scoreText}");
         }
     }
 
@@ -81,10 +77,10 @@ internal class Player
         bool turnSkipped = diceValues == null;
 
         PrintPlayerCard();
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Write category name to input score (score will be set to 0 if no dice were rolled):");
-        Console.ResetColor();
-        string inputCategory = Console.ReadLine().ToLower().Trim();
+        ForegroundColor = ConsoleColor.Green;
+        WriteLine("Write category name to input score (score will be set to 0 if no dice were rolled):");
+        ResetColor();
+        string inputCategory = ReadLine().ToLower().Trim();
 
         if (CategoryShortcuts.ContainsKey(inputCategory))
         {
@@ -96,31 +92,31 @@ internal class Player
         {
             int score = turnSkipped ? 0 : ScoreCalculator.ScoreFunctions[inputCategory](diceValues); // Set score to 0 if no dice were rolled
             PlayerCard[inputCategory] = score;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"{inputCategory} set to {score}");
-            Console.ResetColor();
+            ForegroundColor = ConsoleColor.White;
+            WriteLine($"{inputCategory} set to {score}");
+            ResetColor();
             CheckBonusEligibility();
         }
         else
         {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Invalid category or already scored. Please try again.");
-            Console.ResetColor();
+            Clear();
+            ForegroundColor = ConsoleColor.Red;
+            WriteLine("Invalid category or already scored. Please try again.");
+            ResetColor();
             ChooseScoreCategory(diceValues); // Retry if invalid input
         }
     }
 
     public void DisplayShorthandNotations()
     {
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine("Shorthand Notations:");
+        ForegroundColor = ConsoleColor.Cyan;
+        WriteLine("Shorthand Notations:");
         foreach (var entry in CategoryShortcuts)
         {
-            Console.WriteLine($"{entry.Key} => {entry.Value}");
+            WriteLine($"{entry.Key} => {entry.Value}");
         }
-        Console.ResetColor();
-        Console.WriteLine();
+        ResetColor();
+        WriteLine();
     }
 
     public bool IsScoreboardComplete()
