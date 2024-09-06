@@ -18,11 +18,11 @@ internal class DiceThrower
         }
     }
 
-    public void RollSpecificDice(bool[] diceToKeep)
+    public void RollSpecificDice(HashSet<int> keepIndices)
     {
         for (int i = 0; i < DiceValues.Length; i++)
         {
-            if (!diceToKeep[i]) // Only reroll dice that are not kept
+            if (!keepIndices.Contains(i)) // Only reroll dice that are not kept
             {
                 DiceValues[i] = Random.Shared.Next(1, 7);
             }
@@ -39,9 +39,9 @@ internal class DiceThrower
 
     public string GetDiceValuesAsString() => string.Join(", ", DiceValues.Select(value => $"{value}"));
 
-    public bool[] GetDiceToKeep(DiceThrower diceThrower, int[] currentRoll)
+    public HashSet<int> GetDiceToKeep(DiceThrower diceThrower, int[] currentRoll)
     {
-        bool[] diceToKeep = new bool[currentRoll.Length]; // To track which dice to keep (true means keep)
+        HashSet<int> keepIndices = [];
 
         while (true)
         {
@@ -55,7 +55,7 @@ internal class DiceThrower
             if (string.IsNullOrEmpty(input))
             {
                 WriteLine("Rerolling all dice...");
-                return new bool[currentRoll.Length]; // All dice will be rerolled (none are kept)
+                return keepIndices;
             }
 
             // Validate input: Ensure all characters are digits between 1 and 6
@@ -87,9 +87,9 @@ internal class DiceThrower
                     // Find the first available die with this value and mark it to keep
                     for (int i = 0; i < currentRoll.Length; i++)
                     {
-                        if (currentRoll[i] == value && !diceToKeep[i])
+                        if (currentRoll[i] == value && !keepIndices.Contains(i))
                         {
-                            diceToKeep[i] = true;
+                            keepIndices.Add(i);
                             diceCount[value]--; // Reduce the count of available dice of this value
                             break;
                         }
@@ -114,7 +114,7 @@ internal class DiceThrower
             }
 
             // Return the boolean array indicating which dice to keep
-            return diceToKeep;
+            return keepIndices;
         }
     }
 }

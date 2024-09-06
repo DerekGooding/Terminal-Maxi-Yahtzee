@@ -175,7 +175,7 @@ internal static class Program
                             }
 
                             int[] currentRoll = diceThrower.DiceValues;       // Get the current roll
-                            bool[] diceToKeep = diceThrower.GetDiceToKeep(diceThrower, currentRoll); // Ask player which dice to keep
+                            HashSet<int> diceToKeep = diceThrower.GetDiceToKeep(diceThrower, currentRoll); // Ask player which dice to keep
                             diceThrower.RollSpecificDice(diceToKeep);
                         }
                         else

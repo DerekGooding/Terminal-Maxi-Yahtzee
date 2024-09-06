@@ -5,7 +5,7 @@ internal class Player(string name)
     public string Name { get; set; } = name;
     public Dictionary<string, int?> PlayerCard { get; set; } = _categoryShortcuts.Values.ToDictionary(x => x, _ => (int?)null);
     public int AvailableThrows { get; set; } = 3;
-    public bool BonusCheck { get; set; }
+    public bool BonusCheck { get; set; } = false;
 
     private static readonly Dictionary<string, string> _categoryShortcuts = new()
     {
