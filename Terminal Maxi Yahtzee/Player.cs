@@ -1,65 +1,35 @@
 ﻿namespace Terminal_Maxi_Yahtzee;
 
-internal class Player
+internal class Player(string name)
 {
-    public string Name { get; set; }
-    public Dictionary<string, int?> PlayerCard { get; set; }
-    public int AvailableThrows { get; set; }
+    public string Name { get; set; } = name;
+    public Dictionary<string, int?> PlayerCard { get; set; } = _categoryShortcuts.Values.ToDictionary(x => x, _ => (int?)null);
+    public int AvailableThrows { get; set; } = 3;
     public bool BonusCheck { get; set; }
 
-    private static readonly Dictionary<string, string> CategoryShortcuts = new()
+    private static readonly Dictionary<string, string> _categoryShortcuts = new()
     {
-    { "on", "ones" },
-    { "tw", "twos" },
-    { "th", "threes" },
-    { "fo", "fours" },
-    { "fi", "fives" },
-    { "si", "sixes" },
-    { "op", "one pair" },
-    { "tp", "two pairs" },
-    { "thp", "three pairs" },
-    { "3", "3 same" },
-    { "4", "4 same" },
-    { "5", "5 same" },
-    { "ss", "small straight" },
-    { "ls", "large straight" },
-    { "fs", "full straight" },
-    { "hu", "hut 2+3" },
-    { "ho", "house 3+3" },
-    { "to", "tower 2+4" },
-    { "ch", "chance" },
-    { "ma", "maxi-yahtzee" }
-};
-
-    public Player(string name)
-    {
-        Name = name;
-        AvailableThrows = 3;
-        BonusCheck = false;
-        PlayerCard = new Dictionary<string, int?>
-    {
-        { "ones", null },
-        { "twos", null },
-        { "threes", null },
-        { "fours", null },
-        { "fives", null },
-        { "sixes", null },
-        { "one pair", null },
-        { "two pairs", null },
-        { "three pairs", null },
-        { "3 same", null },
-        { "4 same", null },
-        { "5 same", null },
-        { "small straight", null },
-        { "large straight", null },
-        { "full straight", null },
-        { "hut 2+3", null },
-        { "house 3+3", null },
-        { "tower 2+4", null },
-        { "chance", null },
-        { "maxi-yahtzee", null }
+        { "on", "ones" },
+        { "tw", "twos" },
+        { "th", "threes" },
+        { "fo", "fours" },
+        { "fi", "fives" },
+        { "si", "sixes" },
+        { "op", "one pair" },
+        { "tp", "two pairs" },
+        { "thp", "three pairs" },
+        { "3", "3 same" },
+        { "4", "4 same" },
+        { "5", "5 same" },
+        { "ss", "small straight" },
+        { "ls", "large straight" },
+        { "fs", "full straight" },
+        { "hu", "hut 2+3" },
+        { "ho", "house 3+3" },
+        { "to", "tower 2+4" },
+        { "ch", "chance" },
+        { "ma", "maxi-yahtzee" }
     };
-    }
 
     public void PrintPlayerCard()
     {
@@ -82,9 +52,9 @@ internal class Player
         ResetColor();
         string inputCategory = ReadLine().ToLower().Trim();
 
-        if (CategoryShortcuts.ContainsKey(inputCategory))
+        if (_categoryShortcuts.ContainsKey(inputCategory))
         {
-            inputCategory = CategoryShortcuts[inputCategory];
+            inputCategory = _categoryShortcuts[inputCategory];
         }
 
         // Check if the category is valid and not already scored
@@ -111,7 +81,7 @@ internal class Player
     {
         ForegroundColor = ConsoleColor.Cyan;
         WriteLine("Shorthand Notations:");
-        foreach (KeyValuePair<string, string> entry in CategoryShortcuts)
+        foreach (KeyValuePair<string, string> entry in _categoryShortcuts)
         {
             WriteLine($"{entry.Key} => {entry.Value}");
         }
@@ -138,16 +108,5 @@ internal class Player
         }
     }
 
-    public int CalculateTotalScore()
-    {
-        int totalScore = PlayerCard.Values.Where(v => v.HasValue).Sum(v => v.Value);
-
-        // If the bonus check is true, add 100 points to the total score
-        if (BonusCheck)
-        {
-            totalScore += 100;
-        }
-
-        return totalScore;
-    }
+    public int CalculateTotalScore() => PlayerCard.Values.Where(v => v.HasValue).Sum(v => v.Value) + (BonusCheck ? 100 : 0);
 }
